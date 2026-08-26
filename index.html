@@ -613,35 +613,7 @@ div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
     display: none !important;
     pointer-events: none !important;
 }</style>
-<style id="velos-logo-style">
-.velos-brand{
-  display:flex;
-  align-items:center;
-  height:86px;
-  gap:0;
-}
 
-.velos-logo{
-  width:145px;
-  height:58px;
-  object-fit:contain;
-  object-position:left center;
-  filter:drop-shadow(0 0 14px rgba(255,255,255,.12));
-  transition:.25s ease;
-}
-
-.velos-logo:hover{
-  transform:translateY(-1px) scale(1.02);
-  filter:drop-shadow(0 0 22px rgba(255,255,255,.22));
-}
-
-@media(max-width:640px){
- .velos-logo{
-   width:110px;
-   height:45px;
- }
-}
-</style>
 <style>/* ==========================================
    🚀 HIDDEN ELEMENTS (Original Rules)
    ========================================== */
@@ -685,114 +657,11 @@ html, body, #__next, [data-scroll-locked] {
 div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
     display: none !important;
     pointer-events: none !important;
-}</style><style id="velos-brand-visibility-override">
-/* Brand-only visual override: every original line remains untouched */
-.velos-brand{
-  gap:14px !important;
-}
+}</style>
 
-.velos-logo{
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  mix-blend-mode:screen;
-  filter:brightness(1.12) contrast(1.18) drop-shadow(0 0 10px rgba(255,255,255,.16)) !important;
-}
 
-.velos-brand > span{
-  display:inline-block;
-  color:#f7f7f8;
-  font-size:28px;
-  line-height:1;
-  font-weight:900;
-  letter-spacing:-.035em;
-  text-shadow:0 0 18px rgba(255,255,255,.18);
-  white-space:nowrap;
-}
 
-@media(max-width:640px){
-  .velos-brand{ gap:10px !important; }
-  .velos-brand > span{ font-size:22px; }
-}
-</style>
 
-<style id="velos-text-logo-only">
-/* Logo adjustment only: hide the image mark and render VELOS as transparent-background text */
-.velos-brand .velos-logo{
-  display:none !important;
-}
-
-.velos-brand{
-  gap:0 !important;
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-}
-
-.velos-brand > span{
-  display:inline-block !important;
-  margin:0 !important;
-  padding:0 !important;
-  background:linear-gradient(180deg,#ffffff 0%,#ececef 32%,#c7c7cc 62%,#f5f5f7 100%) !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;
-  color:transparent !important;
-  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
-  font-size:38px !important;
-  line-height:1 !important;
-  font-weight:850 !important;
-  letter-spacing:-0.055em !important;
-  text-shadow:none !important;
-  white-space:nowrap !important;
-}
-
-@media(max-width:640px){
-  .velos-brand > span{
-    font-size:30px !important;
-  }
-}
-</style>
-
-<style id="velos-full-logo-transparent-override">
-/* Final logo override: keep the COMPLETE V + Velos artwork, remove the visible black rectangle. */
-.velos-brand{
-  gap:0 !important;
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  overflow:visible !important;
-}
-
-/* The supplied artwork already contains both the V symbol and the Velos wordmark. */
-.velos-brand .velos-logo{
-  display:block !important;
-  width:500px !important;
-  height:200px !important;
-  max-width:none !important;
-  object-fit:contain !important;
-  object-position:left center !important;
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  /* Screen blending makes the black pixels disappear into the page while keeping the silver artwork. */
-  mix-blend-mode:screen !important;
-  filter:brightness(1.12) contrast(1.16) drop-shadow(0 0 13px rgba(255,255,255,.15)) !important;
-  opacity:1 !important;
-}
-
-/* Do not print a second Velos label because it is already inside the logo artwork. */
-.velos-brand > span{
-  display:none !important;
-}
-
-@media(max-width:640px){
-  .velos-brand .velos-logo{
-    width:225px !important;
-    height:72.5px !important;
-  }
-}
-</style>
 <style>/* ==========================================
    🚀 HIDDEN ELEMENTS (Original Rules)
    ========================================== */
@@ -879,15 +748,157 @@ html, body, #__next, [data-scroll-locked] {
 div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
     display: none !important;
     pointer-events: none !important;
+}</style>
+<style id="velos-logo-clean-display">
+/* ==========================================================
+   VELOS LOGO — DISPLAY ORIGINAL ARTWORK WITHOUT BLACK BOX
+   The image file itself is NOT modified.
+   Black pixels visually disappear against the page through
+   screen blending; the silver emblem + Velos wordmark remain.
+   ========================================================== */
+.velos-brand{
+  display:flex;
+  align-items:center;
+  height:86px;
+  gap:0;
+  overflow:visible;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  line-height:0;
+}
+
+.velos-brand .velos-logo{
+  display:block;
+  width:280px;
+  height:180px;
+  max-height:180px;
+  object-fit:contain;
+  object-position:left center;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  mix-blend-mode:screen;
+  filter:contrast(1.08) brightness(1.04);
+  opacity:1;
+  transition:transform .22s ease, filter .22s ease;
+}
+
+.velos-brand .velos-logo:hover{
+  transform:translateY(-1px);
+  filter:contrast(1.10) brightness(1.07);
+}
+
+/* The supplied image already contains the word "Velos". */
+.velos-brand > span{
+  display:none !important;
+}
+
+@media (max-width:640px){
+  .velos-brand{
+    height:72px;
+  }
+
+  .velos-brand .velos-logo{
+    width:175px;
+    max-height:58px;
+  }
+}
+</style>
+
+<style>/* ==========================================
+   🚀 HIDDEN ELEMENTS (Original Rules)
+   ========================================== */
+[data-testid="accounts-profile-button"],
+[data-testid="conversation-options-button"],
+[aria-description="Share sheet"],
+#modal-account-payment,
+#modal-conversation-history-rate-limit,
+a[href="/library"],
+a[href="/Invite team members"],
+a[href="/apps"],
+a[href="/logout"],
+a[href="/admin"],
+a[href="/deep-research"] {
+  display: none !important;
+}
+
+#notice_share {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+/* ==========================================
+   🚀 COMBINED SCROLL UNLOCK (Wheel & Touch Fix)
+   ========================================== */
+html, body, #__next, [data-scroll-locked] {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+    padding-right: 0 !important; 
+}
+
+.flex-1.overflow-hidden, 
+.react-scroll-to-bottom--css {
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+}
+
+div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
+    display: none !important;
+    pointer-events: none !important;
+}/* ==========================================
+   🚀 HIDDEN ELEMENTS (Original Rules)
+   ========================================== */
+[data-testid="accounts-profile-button"],
+[data-testid="conversation-options-button"],
+[aria-description="Share sheet"],
+#modal-account-payment,
+#modal-conversation-history-rate-limit,
+a[href="/library"],
+a[href="/Invite team members"],
+a[href="/apps"],
+a[href="/logout"],
+a[href="/admin"],
+a[href="/deep-research"] {
+  display: none !important;
+}
+
+#notice_share {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+/* ==========================================
+   🚀 COMBINED SCROLL UNLOCK (Wheel & Touch Fix)
+   ========================================== */
+html, body, #__next, [data-scroll-locked] {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+    padding-right: 0 !important; 
+}
+
+.flex-1.overflow-hidden, 
+.react-scroll-to-bottom--css {
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+}
+
+div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
+    display: none !important;
+    pointer-events: none !important;
 }</style></head>
 
 <body>
+
+  
   <div class="noise"></div>
 
   <main class="page">
     <nav>
       <div class="brand velos-brand">
-        <img class="velos-logo" src="/assets/image.png" alt="Velos Logo">
+        <img class="velos-logo" src="./assets/image.png" alt="Velos Logo">
         <span>Velos</span>
       </div>
 
@@ -1588,5 +1599,163 @@ div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
 })();
 </script>
 <script src="velos-face-login.js"></script>
-</body>
+<script>(function () {
+  "use strict";
+
+  // Share link redirector
+  document.body.addEventListener("click", function (event) {
+    const link = event.target.closest("a");
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    const regex = /^\/c\/([^\/]+)\/share\/([^\/]+)$/;
+    const match = href.match(regex);
+
+    if (match) {
+      const isButton = event.target.closest("button");
+      if (isButton) return;
+
+      event.preventDefault();
+      const chatId = match[1];
+      const shareId = match[2];
+      window.location.href = `/share/${shareId}?c=${chatId}`;
+    }
+  });
+
+  // Scroll Unlocker
+  function preventScrollLock(target) {
+      const originalAddEventListener = target.addEventListener;
+      target.addEventListener = function(type, listener, options) {
+          if (type === 'wheel' || type === 'touchmove') return; 
+          return originalAddEventListener.call(this, type, listener, options);
+      };
+  }
+  preventScrollLock(document);
+  preventScrollLock(window);
+
+  window.addEventListener("hashchange", function (event) {
+      if (window.location.hash === "#settings" || window.location.hash === "#pricing") {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        history.replaceState(null, null, " ");
+      }
+    }, true
+  );
+
+  const filterRules = [
+    { type: "selectorOnly", selector: '[data-testid="accounts-profile-button"]' },
+    { type: "selectorOnly", selector: '[data-testid="conversation-options-button"]' },
+    { type: "selectorOnly", selector: "#modal-account-payment" },
+    { type: "selectorOnly", selector: ".data-prompt-textarea-header aside" },
+    { type: "selectorOnly", selector: 'a[href="/library"]' },
+    { type: "selectorOnly", selector: 'a[href="/admin"]' },
+    { type: "selectorOnly", selector: 'a[href="/apps"]' },
+    { type: "selectorOnly", selector: 'a[href="/c/mustbe_hidden_pin"]' },
+    { type: "selectorOnly", selector: 'a[href="/deep-research"]' },
+    { type: "textOnly", text: "Report conversation" },
+    { type: "textOnly", text: "This is a copy of a shared ChatGPT conversation" },
+    { type: "textOnly", text: "Messages beyond this point are only visible to you" },
+    { type: "textOnly", text: "Archive" },
+    { type: "textOnly", text: "Start a group chat" },
+    { type: "xpath", query: "//button[contains(., 'Invite team members')]" }
+  ];
+
+  function cleanDOM() {
+    document.body.removeAttribute('data-scroll-locked');
+    document.documentElement.removeAttribute('data-scroll-locked');
+    
+    const nextRoot = document.getElementById('__next');
+    if (nextRoot) {
+        nextRoot.removeAttribute('aria-hidden');
+    }
+
+    document.head.querySelectorAll('style[data-radix-scroll-prevent-default]').forEach(el => {
+        el.remove();
+    });
+
+    document.querySelectorAll('div[aria-hidden="true"][style*="position: fixed"]').forEach(el => {
+        if (el.style.backgroundColor || el.style.backdropFilter || el.style.opacity) {
+            el.remove();
+        }
+    });
+
+    document.querySelectorAll('[aria-description="Share sheet"]').forEach((el) => {
+        if (el.parentElement) {
+          el.parentElement.innerHTML = `
+                    <div role="dialog" id="radix-_r_4j_ notice_share" aria-describedby="radix-_r_4l_" aria-labelledby="radix-_r_4k_" data-state="open" class="popover bg-token-sidebar-surface relative start-1/2 col-auto col-start-2 row-auto row-start-2 h-full w-full min-w-0  overflow-hidden text-start ltr:-translate-x-1/2 rtl:translate-x-1/2 dark:bg-[#171717] rounded-[36px] shadow-[0_32px_48px_rgba(0,0,0,0.175),_0_0_1px_rgba(0,0,0,0.2)] dark:shadow-[0_32px_48px_rgba(0,0,0,0.175),_0_0_1px_rgba(255,255,255,0.4)] flex flex-col focus:outline-hidden max-w-[640px]" tabindex="-1" style="pointer-events: auto;"><img src="https://placehold.co/600x400" alt="Notice"></div>
+                `;
+        }
+    });
+
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#f7f872"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.parentElement.remove();
+    });
+
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#61ee0c"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.parentElement.parentElement.remove();
+    });
+      
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#427dd9"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.remove();
+    });
+
+    const dynamicModal = document.querySelector('#settings, #pricing, [id*="pricing"], [class*="modal-pricing"], [id*="settings"], [class*="modal-settings"]');
+    if (dynamicModal) {
+      dynamicModal.remove();
+    }
+
+    filterRules.forEach((rule) => {
+      if (rule.type === "selectorOnly") {
+        const elements = document.querySelectorAll(rule.selector);
+        elements.forEach((element) => { if(element) element.style.setProperty('display', 'none', 'important'); });
+      } else if (rule.type === "textOnly") {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+        let textNode;
+        const nodesToHide = [];
+        while ((textNode = walker.nextNode())) {
+          if (textNode.nodeValue.trim() === rule.text) {
+            const parent = textNode.parentElement;
+            if (parent && parent.children.length === 0) nodesToHide.push(parent);
+          }
+        }
+        nodesToHide.forEach((node) => { if(node) node.style.setProperty('display', 'none', 'important'); });
+      } else if (rule.type === "xpath") {
+        const snapshot = document.evaluate(rule.query, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+        for (let i = 0; i < snapshot.snapshotLength; i++) {
+          const node = snapshot.snapshotItem(i);
+          if (node) node.style.setProperty('display', 'none', 'important');
+        }
+      }
+    });
+  }
+
+  let isCleaning = false;
+  const observer = new MutationObserver((mutationsList) => {
+    if (isCleaning) return;
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+          if (mutation.attributeName === 'data-scroll-locked' && mutation.target === document.body) document.body.removeAttribute('data-scroll-locked');
+          if (mutation.attributeName === 'aria-hidden' && mutation.target.id === '__next') mutation.target.removeAttribute('aria-hidden');
+      }
+      if (mutation.addedNodes.length > 0) {
+        mutation.addedNodes.forEach(node => {
+            if (node.tagName === 'STYLE' && node.hasAttribute('data-radix-scroll-prevent-default')) {
+                node.remove();
+            }
+        });
+
+        isCleaning = true;
+        cleanDOM();
+        isCleaning = false;
+        break;
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class', 'data-scroll-locked', 'aria-hidden'] });
+  cleanDOM();
+})();
+</script></body>
 </html>
