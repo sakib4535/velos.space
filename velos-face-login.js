@@ -66,7 +66,7 @@ and session authorization to your backend/server.
     const CONFIG = {
 
         // Must open after successful registration / verification
-        SUCCESS_URL: "../frontend/interface.html",
+        SUCCESS_URL: "./app/index.html",
 
         LOGIN_HASH: "#face-login",
 
@@ -4405,7 +4405,7 @@ and session authorization to your backend/server.
 
             "HUMAN DETECTED",
 
-            "Identity confirmed. Opening interface.html..."
+            "Identity confirmed. Opening interface for you..."
 
         );
 
