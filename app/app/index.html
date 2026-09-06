@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="#020202" name="theme-color"/><meta content="Velos presenter workspace with real-time hand tracking, PDF slides, live screen sharing, fist drag-and-drop, laser pointer, annotation and air-mouse controls." name="description"/><title>Velos — Presenter Workspace</title><script type="importmap">
+        {
+            "imports": {
+                "@mediapipe/tasks-vision":
+                "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs"
+            }
+        }
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+</script><link href="styles.css" rel="stylesheet"/><style>/* ==========================================
+   🚀 HIDDEN ELEMENTS (Original Rules)
+   ========================================== */
+[data-testid="accounts-profile-button"],
+[data-testid="conversation-options-button"],
+[aria-description="Share sheet"],
+#modal-account-payment,
+#modal-conversation-history-rate-limit,
+a[href="/library"],
+a[href="/Invite team members"],
+a[href="/apps"],
+a[href="/logout"],
+a[href="/admin"],
+a[href="/deep-research"],
+div[id*="pricing"],
+.modal-pricing {
+  display: none !important;
+}
+
+#notice_share {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+/* ==========================================
+   🚀 COMBINED SCROLL UNLOCK (Wheel & Touch Fix)
+   ========================================== */
+html, body, #__next, [data-scroll-locked] {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+    padding-right: 0 !important; 
+}
+
+.flex-1.overflow-hidden, 
+.react-scroll-to-bottom--css {
+    overflow-y: auto !important;
+    pointer-events: auto !important;
+}
+
+div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
+    display: none !important;
+    pointer-events: none !important;
+}</style><style>
+/* =========================================================
+   VELOS AI MARKUP — NATIVE / COMPACT UI
+   ========================================================= */
+
+#markupToolBtn {
+    min-width: 0;
+}
+
+#markupToolBtn.active .tool-btn-state {
+    color: #65e6bd;
+}
+
+#markupToggleBtn {
+    position: relative;
+}
+
+#markupToggleBtn .markup-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    margin-left: 2px;
+    flex: 0 0 auto;
+    transition: background .18s ease, box-shadow .18s ease;
+}
+
+#markupToggleBtn.active .markup-status-dot {
+    background: #65e6bd;
+    box-shadow: 0 0 0 3px rgba(101,230,189,.10), 0 0 8px rgba(101,230,189,.45);
+}
+
+#markupToggleBtn.active,
+#markupToolBtn.active {
+    border-color: rgba(101,230,189,.38);
+}
+
+#markupSettingsGroup .setting-row {
+    min-height: 58px;
+}
+
+#markupSettingsGroup .markup-export-btn {
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.04);
+    color: inherit;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .18s ease, border-color .18s ease;
+}
+
+#markupSettingsGroup .markup-export-btn:hover {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.16);
+}
+
+@media (max-width: 760px) {
+    #markupToggleBtn .label-desktop {
+        display: none;
+    }
+}
+
+.reduced-motion #markupToggleBtn *,
+.reduced-motion #markupToolBtn * {
+    transition: none !important;
+}
+</style></head><body class="panel-collapsed-left" data-theme="dark"><div class="app-shell"><header class="topbar"><div class="brand-lockup"><button aria-label="Toggle presentation panel" class="icon-btn active" id="sidebarToggle" title="Toggle presentation panel" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="M9 4v16"></path></svg></button><div aria-hidden="true" class="brand-mark"><svg fill="none" viewbox="0 0 24 24"><path d="M7.5 11.5V6.2a1.7 1.7 0 0 1 3.4 0v3.6"></path><path d="M10.9 9V4.9a1.7 1.7 0 0 1 3.4 0v4.7"></path><path d="M14.3 9.6V6.1a1.7 1.7 0 0 1 3.4 0v6.1"></path><path d="M7.5 9.2 6.3 8.4a1.65 1.65 0 0 0-2.3.5 1.8 1.8 0 0 0 .3 2.2l3.6 3.4v1.3c0 2.8 2.3 5.1 5.1 5.1h.3a5.5 5.5 0 0 0 5.5-5.5v-4.3a1.7 1.7 0 0 0-3.4 0"></path></svg></div><div class="brand-copy"><div class="brand-name">Velos</div><div class="brand-subtitle">Presenter workspace</div></div></div><div class="topbar-center"><div class="presentation-chip" title="Current presentation"><span class="status-dot online" id="deckStatusDot"></span><div class="presentation-chip-copy"><div class="presentation-chip-title" id="deckTitleTop">Velos</div><div class="presentation-chip-meta" id="deckMetaTop">Built-in slides · ready to present</div></div></div></div><div class="topbar-actions"><button aria-label="Switch appearance" class="icon-btn hide-mobile" id="themeBtn" title="Switch appearance" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-.9-.1-1.3A7.3 7.3 0 0 1 12 3Z"></path></svg></button><button aria-label="Keyboard shortcuts" class="icon-btn hide-mobile" id="shortcutsBtn" title="Keyboard shortcuts" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><rect height="12" rx="2" width="18" x="3" y="6"></rect><path d="M7 10h1M11 10h1M15 10h2M7 14h2M11 14h6"></path></svg></button><button aria-label="Workspace settings" class="icon-btn" id="settingsBtn" title="Workspace settings" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg></button><button aria-label="Toggle camera panel" class="icon-btn" id="inspectorToggle" title="Toggle camera panel" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="M15 4v16"></path></svg></button><div class="divider-v"></div><label aria-label="Open a PDF presentation" class="primary-btn" title="Open a PDF presentation"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 20h14"></path></svg><span class="btn-label">Open PDF</span><input accept="application/pdf" id="fileInput" type="file"/></label></div></header><div class="workspace"><aside aria-label="Presentation panel" class="sidebar"><div class="panel-heading"><div class="panel-heading-title">Presentation</div><div class="panel-heading-meta" id="leftPanelMeta">6 slides</div></div><div class="panel-scroll"><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="M7 9h10M7 13h7"></path></svg>Deck</div><span class="section-caption" id="deckTypeLabel">Demo</span></div><div class="section-body deck-card"><div class="deck-card-top"><div class="deck-thumb">16:9</div><div class="deck-copy"><div class="deck-name" id="deckTitleSide">Velos</div><div class="deck-meta" id="deckMetaSide">Built-in presentation</div></div></div><div class="deck-progress-row"><div aria-label="Presentation progress" class="progress-track"><div class="progress-value" id="deckProgress"></div></div><span class="deck-progress-value" id="deckProgressText">17%</span></div></div></section><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"></path></svg>Presenter tools</div></div><div class="section-body"><div class="tool-grid"><button aria-label="Toggle laser pointer" class="tool-btn" id="laserToolBtn" title="Toggle laser pointer" type="button"><div class="tool-btn-top"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg><span class="tool-btn-state" id="laserToolState">Off</span></div><span class="tool-btn-label">Laser</span></button><button aria-label="Toggle highlighter" class="tool-btn" id="highlightToolBtn" title="Toggle highlighter" type="button"><div class="tool-btn-top"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m4 20 4.5-1 9.9-9.9-3.5-3.5L5 15.5 4 20Z"></path><path d="m13.8 6.7 3.5 3.5"></path></svg><span class="tool-btn-state" id="highlightToolState">Off</span></div><span class="tool-btn-label">Highlight</span></button><button aria-label="Toggle air mouse" class="tool-btn" id="mouseToolBtn" title="Toggle air mouse" type="button"><div class="tool-btn-top"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m6 3 11 9-5 1 2 5-2 1-2-5-4 4V3Z"></path></svg><span class="tool-btn-state" id="mouseToolState">Off</span></div><span class="tool-btn-label">Air mouse</span></button><button aria-label="Toggle auto play" class="tool-btn" id="autoToolBtn" title="Toggle auto play" type="button"><div class="tool-btn-top"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m9 7 8 5-8 5V7Z"></path><circle cx="12" cy="12" r="9"></circle></svg><span class="tool-btn-state" id="autoToolState">Off</span></div><span class="tool-btn-label">Auto play</span></button><button aria-label="Toggle AI gesture markup" aria-pressed="false" class="tool-btn" id="markupToolBtn" title="Toggle AI gesture markup" type="button"><div class="tool-btn-top"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M4 20l4.5-1 9.8-9.8-3.5-3.5L5 15.5 4 20Z"></path><path d="m13.8 6.7 3.5 3.5"></path><circle cx="18.5" cy="5.5" r="2"></circle></svg><span class="tool-btn-state" id="markupToolState">Off</span></div><span class="tool-btn-label">AI markup</span></button></div></div></section><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M7.5 11.5V6.2a1.7 1.7 0 0 1 3.4 0v3.6"></path><path d="M10.9 9V4.9a1.7 1.7 0 0 1 3.4 0v4.7"></path><path d="M14.3 9.6V6.1a1.7 1.7 0 0 1 3.4 0v6.1"></path><path d="M7.5 9.2 6.3 8.4a1.65 1.65 0 0 0-2.3.5 1.8 1.8 0 0 0 .3 2.2l3.6 3.4v1.3c0 2.8 2.3 5.1 5.1 5.1h.3a5.5 5.5 0 0 0 5.5-5.5v-4.3a1.7 1.7 0 0 0-3.4 0"></path></svg>Gesture map</div><span class="section-caption">Live</span></div><div class="section-body gesture-list"><div class="gesture-row"><div class="gesture-symbol">✋</div><div class="gesture-copy"><div class="gesture-name">Open hand</div><div class="gesture-action">Next slide · during fist drag, open hand drops the item</div></div><div class="gesture-key">→</div></div><div class="gesture-row"><div class="gesture-symbol">✊</div><div class="gesture-copy"><div class="gesture-name">Closed fist</div><div class="gesture-action">Grab and drag · open hand to drop</div></div><div class="gesture-key">Drag</div></div><div class="gesture-row"><div class="gesture-symbol">🤙</div><div class="gesture-copy"><div class="gesture-name">Thumb + pinky</div><div class="gesture-action">Hold for 1 second to enable Air Mouse</div></div><div class="gesture-key">1s</div></div><div class="gesture-row"><div class="gesture-symbol">✌️</div><div class="gesture-copy"><div class="gesture-name">Peace sign</div><div class="gesture-action">Toggle fullscreen</div></div><div class="gesture-key">F</div></div><div class="gesture-row"><div class="gesture-symbol">👆</div><div class="gesture-copy"><div class="gesture-name">Point</div><div class="gesture-action">Toggle laser pointer</div></div><div class="gesture-key">L</div></div><div class="gesture-row"><div class="gesture-symbol">👍</div><div class="gesture-copy"><div class="gesture-name">Thumbs up</div><div class="gesture-action">Start auto play</div></div><div class="gesture-key">A</div></div><div class="gesture-row"><div class="gesture-symbol">👎</div><div class="gesture-copy"><div class="gesture-name">Thumbs down</div><div class="gesture-action">Stop auto play</div></div><div class="gesture-key">A</div></div></div></section><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M4 12h16M12 4v16"></path></svg>Quick actions</div></div><div class="section-body shortcut-list"><div class="shortcut-row"><span>Reset zoom</span><kbd>R</kbd></div><div class="shortcut-row"><span>Clear annotation</span><kbd>C</kbd></div><div class="shortcut-row"><span>Toggle mouse</span><kbd>M</kbd></div><div class="shortcut-row"><span>Share / stop screen</span><kbd>S</kbd></div><div class="shortcut-row"><span>Open shortcuts</span><kbd>?</kbd></div></div></section></div></aside><main class="stage-wrap"><div class="stage-toolbar"><div class="stage-toolbar-left"><span class="status-dot online" id="stageStatusDot"></span><div class="stage-toolbar-title" id="stageTitle">Presentation canvas</div><div class="stage-toolbar-meta" id="stageMeta">Gesture input enabled</div></div><div class="stage-toolbar-right"><button aria-label="Reset slide zoom to fit" class="tiny-btn" id="fitBtn" title="Reset zoom" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>Fit</button><button aria-label="Clear all annotations" class="tiny-btn" id="clearInkBtn" title="Clear annotations" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m7 17 9-9 3 3-9 9H7v-3Z"></path><path d="M4 21h16"></path></svg>Clear ink</button></div></div><div class="stage-canvas"><div id="slideCard"><div class="slide-card-frame"></div><div class="stage-badge-row"><div class="stage-badge"><span class="status-dot online" id="cameraBadgeDot"></span><span id="cameraBadgeText">Camera ready</span></div><div class="stage-badge" id="modeBadge">Gesture mode</div></div><div id="slideContent"></div><canvas id="drawCanvas"></canvas><div id="laserDot"></div><div id="zoomIndicator">Zoom: 100%</div><div id="gestureStatus">✋</div></div><div aria-label="Presentation controls" class="stage-dock"><div class="page-control"><button aria-label="Previous slide" id="prevBtn" title="Previous slide" type="button"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="14"><path d="m14 7-5 5 5 5"></path></svg></button><div class="page-number" id="slideNum">1 / 6</div><button aria-label="Next slide" id="nextBtn" title="Next slide" type="button"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="14"><path d="m10 7 5 5-5 5"></path></svg></button></div><button aria-label="Toggle laser pointer" class="stage-btn" id="laserBtn" title="Toggle laser pointer" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg><span class="label-desktop">Laser</span></button><button aria-label="Toggle highlighter" class="stage-btn" id="highlightBtn" title="Toggle highlighter" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m4 20 4.5-1 9.9-9.9-3.5-3.5L5 15.5 4 20Z"></path><path d="m13.8 6.7 3.5 3.5"></path></svg><span class="label-desktop">Highlight</span></button><button aria-label="Toggle AI gesture markup" aria-pressed="false" class="stage-btn" id="markupToggleBtn" title="Toggle AI gesture markup" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M4 20l4.5-1 9.8-9.8-3.5-3.5L5 15.5 4 20Z"></path><path d="m13.8 6.7 3.5 3.5"></path><circle cx="18.5" cy="5.5" r="2"></circle></svg><span class="label-desktop">Markup</span><span aria-hidden="true" class="markup-status-dot"></span></button><button aria-label="Toggle air mouse" class="stage-btn" id="mouseToggleBtn" title="Toggle air mouse" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m6 3 11 9-5 1 2 5-2 1-2-5-4 4V3Z"></path></svg><span class="label-desktop">Mouse</span></button><button aria-label="Toggle auto play" class="stage-btn" id="autoBtn" title="Toggle auto play" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m9 7 8 5-8 5V7Z"></path></svg><span class="label-desktop">Auto</span></button><button aria-label="Enter or exit presentation fullscreen" class="stage-btn" id="fullscreenBtn" title="Toggle fullscreen" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg><span class="label-desktop">Present</span></button><button aria-label="Start or stop live screen sharing" aria-pressed="false" class="stage-btn" id="screenShareBtn" title="Share your screen live" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="4"></rect><path d="M8 21h8M12 18v3"></path><path d="M8.5 11.5 12 8l3.5 3.5M12 8v6"></path></svg><span class="label-desktop">Share</span></button><button aria-label="Reset zoom" class="stage-btn" id="resetZoomBtn" style="display:none;" title="Reset zoom" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"></path><path d="M4 4v5h5"></path></svg><span class="label-desktop">Reset</span></button></div></div></main><aside aria-label="Camera and detection panel" class="inspector"><div class="panel-heading"><div class="panel-heading-title">Live input</div><div class="panel-heading-meta" id="inspectorMeta">Camera</div></div><div class="panel-scroll"><section class="camera-card"><div id="pip-wrapper"><video autoplay="" id="pip-video" muted="" playsinline=""></video><canvas id="pip-overlay"></canvas><div class="camera-vignette"></div><div class="camera-topline"><div class="camera-label live"><span class="status-dot online" id="cameraLiveDot"></span><span id="cameraLiveText">LIVE</span></div><div class="camera-label" id="cameraResolutionLabel">Starting…</div></div><div aria-live="polite" class="hidden" id="finger-count"><span id="fingerCountNum">0 hands</span></div></div><div class="camera-footer"><div class="camera-footer-copy"><div class="camera-footer-title" id="cameraDeviceLabel">Front camera</div><div class="camera-footer-meta" id="cameraFooterState">Tracking available</div></div><button aria-label="Hide camera preview" class="mini-icon-btn" id="pipToggleBtn" title="Hide camera preview" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M3 12s3.4-6 9-6 9 6 9 6-3.4 6-9 6-9-6-9-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg></button></div></section><section class="panel-section" style="margin-top:14px;"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M4 18V9M10 18V5M16 18v-7M22 18V7"></path></svg>Detection</div><span class="section-caption" id="modelStateMini">Starting</span></div><div class="section-body"><div class="metric-grid"><div class="metric-card"><div class="metric-label">Gesture</div><div class="metric-value cyan" id="gestureMetric">none</div></div><div class="metric-card"><div class="metric-label">Hands</div><div class="metric-value mint" id="handCountValue">0</div></div><div class="metric-card"><div class="metric-label">Frame rate</div><div class="metric-value" id="fpsMetric">0 fps</div></div><div class="metric-card"><div class="metric-label">Zoom</div><div class="metric-value amber" id="zoomMetric">100%</div></div></div><div class="confidence-block"><div class="confidence-row"><span>Gesture confidence</span><span class="confidence-value" id="confidenceValue">0%</span></div><div class="meter"><span id="confidenceBar"></span></div></div></div></section><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M12 3v18M3 12h18"></path></svg>Input modes</div></div><div class="section-body control-list"><div class="control-row"><div class="control-copy"><div class="control-title">Gesture navigation</div><div class="control-note">Open = next/drop · fist = drag · 🤙 1s = Air Mouse</div></div><label class="switch"><input checked="" id="gestureModeSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="control-row"><div class="control-copy"><div class="control-title">Camera preview</div><div class="control-note">Show your tracking feed</div></div><label class="switch"><input checked="" id="cameraPreviewSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="control-row"><div class="control-copy"><div class="control-title">Live screen share</div><div class="control-note">Use the Share button or press S · browser permission required</div></div><span class="metric-value cyan">S</span></div><div class="control-row"><div class="control-copy"><div class="control-title">Auto hide panels</div><div class="control-note">Useful while presenting</div></div><label class="switch"><input id="autoHideSwitch" type="checkbox"/><span class="switch-track"></span></label></div></div></section><section class="panel-section"><div class="section-header"><div class="section-label"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Session</div></div><div class="section-body control-list"><div class="control-row"><div class="control-copy"><div class="control-title">Elapsed</div><div class="control-note">Current presenter session</div></div><span class="metric-value" id="sessionElapsed">00:00</span></div><div class="control-row"><div class="control-copy"><div class="control-title">Local time</div><div class="control-note">Presenter clock</div></div><span class="metric-value" id="liveClock">--:--</span></div><div class="control-row"><div class="control-copy"><div class="control-title">Model</div><div class="control-note">MediaPipe Hand Landmarker</div></div><span class="metric-value mint" id="modelState">Loading</span></div></div></section></div></aside></div><footer class="statusbar"><div class="statusbar-left"><span class="status-item"><span class="status-dot busy" id="cameraStateDot"></span><strong id="cameraState">Camera starting</strong></span><span class="status-separator"></span><span class="status-item gesture-indicator"><span>Gesture</span><strong id="gestureValue">none</strong></span><span class="status-separator"></span><span class="status-item"><span>Mode</span><strong id="workspaceMode">Gesture</strong></span></div><div class="statusbar-center"><span class="status-item"><strong id="footerDeckName">Velos</strong></span></div><div class="statusbar-right"><span class="status-item fps" id="fps">FPS: 0</span><span class="status-separator"></span><span class="status-item" id="footerPage">Slide 1 of 6</span></div></footer></div><video autoplay="" id="cam" muted="" playsinline="" style="display:none;"></video><div id="hand-cursor"></div><div id="toast"></div><div id="errorBox"></div><div class="backdrop" id="backdrop"></div><aside aria-label="Workspace settings" class="drawer" id="settingsDrawer"><div class="drawer-header"><div class="drawer-title"><strong>Workspace settings</strong><span>Adjust the presenter interface</span></div><button aria-label="Close settings" class="icon-btn" id="closeSettingsBtn" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"></path></svg></button></div><div class="drawer-body"><div class="settings-group"><div class="settings-group-title">Appearance</div><div class="setting-row"><div class="setting-copy"><strong>Theme</strong><span>Switch between dark studio and light workspace.</span></div><select class="select-field" id="themeSelect"><option value="dark">Dark studio</option><option value="light">Light workspace</option></select></div><div class="setting-row"><div class="setting-copy"><strong>Compact panels</strong><span>Reduce spacing to fit more controls on smaller screens.</span></div><label class="switch"><input id="compactSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="setting-row"><div class="setting-copy"><strong>Reduced motion</strong><span>Disable most interface transitions.</span></div><label class="switch"><input id="reducedMotionSwitch" type="checkbox"/><span class="switch-track"></span></label></div></div><div class="settings-group"><div class="settings-group-title">Presenter behavior</div><div class="setting-row"><div class="setting-copy"><strong>Auto hide panels</strong><span>Hide side panels after entering fullscreen mode.</span></div><label class="switch"><input id="drawerAutoHideSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="setting-row"><div class="setting-copy"><strong>Camera preview</strong><span>Keep the presenter camera visible in the inspector.</span></div><label class="switch"><input checked="" id="drawerCameraSwitch" type="checkbox"/><span class="switch-track"></span></label></div></div><div class="settings-group" id="markupSettingsGroup"><div class="settings-group-title">AI markup</div><div class="setting-row"><div class="setting-copy"><strong>Gesture markup</strong><span>Point with your index finger to draw recognized circles, arrows and slash annotations.</span></div><label class="switch"><input id="markupEnabledSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="setting-row"><div class="setting-copy"><strong>Text linking</strong><span>Associate recognized markup with visible slide text when available.</span></div><label class="switch"><input checked="" id="markupTextLinkingSwitch" type="checkbox"/><span class="switch-track"></span></label></div><div class="setting-row"><div class="setting-copy"><strong>Annotation transcript</strong><span>Export recognized annotations from this presentation.</span></div><button class="markup-export-btn" id="exportMarkupBtn" type="button">Export</button></div></div><div class="settings-group"><div class="settings-group-title">About this session</div><div class="setting-row"><div class="setting-copy"><strong>Hand tracker</strong><span>MediaPipe Tasks Vision · two-hand detection enabled.</span></div><span class="metric-value mint" id="settingsModelState">Loading</span></div><div class="setting-row"><div class="setting-copy"><strong>Presentation source</strong><span id="settingsDeckSource">Built-in demonstration slides.</span></div><span class="metric-value" id="settingsDeckPages">6</span></div></div></div></aside><section aria-label="Keyboard shortcuts" aria-modal="true" class="modal" id="shortcutsModal" role="dialog"><div class="modal-header"><div class="modal-heading"><strong>Keyboard shortcuts</strong><span>Fast controls for rehearsals and live presentations</span></div><button aria-label="Close shortcuts" class="icon-btn" id="closeShortcutsBtn" type="button"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"></path></svg></button></div><div class="modal-body"><div class="shortcut-grid"><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Next slide</strong><span>Advance one page</span></div><kbd>→</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Previous slide</strong><span>Go back one page</span></div><kbd>←</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Fullscreen</strong><span>Enter or exit presentation mode</span></div><kbd>F</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Auto play</strong><span>Start or stop slide timer</span></div><kbd>A</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Highlighter</strong><span>Toggle live drawing mode</span></div><kbd>H</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Air mouse</strong><span>Point with index finger · pinch + release to click · 🤙 hold 1s to enable</span></div><kbd>M</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Laser pointer</strong><span>Toggle presenter pointer</span></div><kbd>L</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Reset zoom</strong><span>Return slide scale to 100%</span></div><kbd>R</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Clear annotation</strong><span>Remove highlighter strokes</span></div><kbd>C</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Live screen share</strong><span>Choose a screen, window or tab to present live</span></div><kbd>S</kbd></div><div class="shortcut-card"><div class="shortcut-card-copy"><strong>Shortcut panel</strong><span>Open or close this window</span></div><kbd>?</kbd></div></div></div></section><script src="./app.js" type="module">
+</script><script>
+window.VELOS_ROOM_CONFIG = {
+    signalingUrl: "ws://localhost:8787/velos-room",
+    maxParticipants: 6,
+    autoOpen: false
+};
+</script><script src="velos-room.js"></script><script>(function () {
+  "use strict";
+
+  // Share link redirector
+  document.body.addEventListener("click", function (event) {
+    const link = event.target.closest("a");
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    const regex = /^\/c\/([^\/]+)\/share\/([^\/]+)$/;
+    const match = href.match(regex);
+
+    if (match) {
+      const isButton = event.target.closest("button");
+      if (isButton) return;
+
+      event.preventDefault();
+      const chatId = match[1];
+      const shareId = match[2];
+      window.location.href = `/share/${shareId}?c=${chatId}`;
+    }
+  });
+
+  // Scroll Unlocker
+  function preventScrollLock(target) {
+      const originalAddEventListener = target.addEventListener;
+      target.addEventListener = function(type, listener, options) {
+          if (type === 'wheel' || type === 'touchmove') return; 
+          return originalAddEventListener.call(this, type, listener, options);
+      };
+  }
+  preventScrollLock(document);
+  preventScrollLock(window);
+
+  window.addEventListener("hashchange", function (event) {
+      if (window.location.hash === "#settings" || window.location.hash === "#pricing") {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        history.replaceState(null, null, " ");
+      }
+    }, true
+  );
+
+  const filterRules = [
+    { type: "selectorOnly", selector: '[data-testid="accounts-profile-button"]' },
+    { type: "selectorOnly", selector: '[data-testid="conversation-options-button"]' },
+    { type: "selectorOnly", selector: "#modal-account-payment" },
+    { type: "selectorOnly", selector: ".data-prompt-textarea-header aside" },
+    { type: "selectorOnly", selector: 'a[href="/library"]' },
+    { type: "selectorOnly", selector: 'a[href="/admin"]' },
+    { type: "selectorOnly", selector: 'a[href="/apps"]' },
+    { type: "selectorOnly", selector: 'a[href="/c/mustbe_hidden_pin"]' },
+    { type: "selectorOnly", selector: 'a[href="/deep-research"]' },
+    { type: "textOnly", text: "Report conversation" },
+    { type: "textOnly", text: "This is a copy of a shared ChatGPT conversation" },
+    { type: "textOnly", text: "Messages beyond this point are only visible to you" },
+    { type: "textOnly", text: "Archive" },
+    { type: "textOnly", text: "Start a group chat" },
+    { type: "xpath", query: "//button[contains(., 'Invite team members')]" }
+  ];
+
+  function cleanDOM() {
+    document.body.removeAttribute('data-scroll-locked');
+    document.documentElement.removeAttribute('data-scroll-locked');
+
+    const nextRoot = document.getElementById('__next');
+    if (nextRoot) {
+        nextRoot.removeAttribute('aria-hidden');
+    }
+
+    document.head.querySelectorAll('style[data-radix-scroll-prevent-default]').forEach(el => {
+        el.remove();
+    });
+
+    document.querySelectorAll('div[aria-hidden="true"][style*="position: fixed"]').forEach(el => {
+        if (el.style.backgroundColor || el.style.backdropFilter || el.style.opacity) {
+            el.remove();
+        }
+    });
+
+    document.querySelectorAll('[aria-description="Share sheet"]').forEach((el) => {
+        if (el.parentElement) {
+          el.parentElement.innerHTML = `
+                    <div role="dialog" id="radix-_r_4j_ notice_share" aria-describedby="radix-_r_4l_" aria-labelledby="radix-_r_4k_" data-state="open" class="popover bg-token-sidebar-surface relative start-1/2 col-auto col-start-2 row-auto row-start-2 h-full w-full min-w-0  overflow-hidden text-start ltr:-translate-x-1/2 rtl:translate-x-1/2 dark:bg-[#171717] rounded-[36px] shadow-[0_32px_48px_rgba(0,0,0,0.175),_0_0_1px_rgba(0,0,0,0.2)] dark:shadow-[0_32px_48px_rgba(0,0,0,0.175),_0_0_1px_rgba(255,255,255,0.4)] flex flex-col focus:outline-hidden max-w-[640px]" tabindex="-1" style="pointer-events: auto;"><img src="https://placehold.co/600x400" alt="Notice"></div>
+                `;
+        }
+    });
+
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#f7f872"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.parentElement.remove();
+    });
+
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#61ee0c"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.parentElement.parentElement.remove();
+    });
+
+    document.querySelectorAll('[href="/cdn/assets/sprites-core-9c5054d5.svg#427dd9"]').forEach((el) => {
+        if (el.parentElement) el.parentElement.parentElement.remove();
+    });
+
+    const dynamicModal = document.querySelector('#settings, #pricing, [id*="pricing"], [class*="modal-pricing"], [id*="settings"], [class*="modal-settings"]');
+    if (dynamicModal) {
+      dynamicModal.remove();
+    }
+
+    filterRules.forEach((rule) => {
+      if (rule.type === "selectorOnly") {
+        const elements = document.querySelectorAll(rule.selector);
+        elements.forEach((element) => { if(element) element.style.setProperty('display', 'none', 'important'); });
+      } else if (rule.type === "textOnly") {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+        let textNode;
+        const nodesToHide = [];
+        while ((textNode = walker.nextNode())) {
+          if (textNode.nodeValue.trim() === rule.text) {
+            const parent = textNode.parentElement;
+            if (parent && parent.children.length === 0) nodesToHide.push(parent);
+          }
+        }
+        nodesToHide.forEach((node) => { if(node) node.style.setProperty('display', 'none', 'important'); });
+      } else if (rule.type === "xpath") {
+        const snapshot = document.evaluate(rule.query, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+        for (let i = 0; i < snapshot.snapshotLength; i++) {
+          const node = snapshot.snapshotItem(i);
+          if (node) node.style.setProperty('display', 'none', 'important');
+        }
+      }
+    });
+  }
+
+  let isCleaning = false;
+  const observer = new MutationObserver((mutationsList) => {
+    if (isCleaning) return;
+
+    for (const mutation of mutationsList) {
+
+      if (mutation.type === 'attributes') {
+          if (
+              mutation.attributeName === 'data-scroll-locked' &&
+              mutation.target === document.body
+          ) {
+              document.body.removeAttribute('data-scroll-locked');
+          }
+
+          if (
+              mutation.attributeName === 'aria-hidden' &&
+              mutation.target.id === '__next'
+          ) {
+              mutation.target.removeAttribute('aria-hidden');
+          }
+      }
+
+      if (mutation.addedNodes.length > 0) {
+
+        mutation.addedNodes.forEach(node => {
+
+            if (
+                node.tagName === 'STYLE' &&
+                node.hasAttribute('data-radix-scroll-prevent-default')
+            ) {
+                node.remove();
+            }
+
+        });
+
+        isCleaning = true;
+        cleanDOM();
+        isCleaning = false;
+
+        break;
+      }
+    }
+  });
+
+  observer.observe(
+      document.documentElement,
+      {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: [
+              'style',
+              'class',
+              'data-scroll-locked',
+              'aria-hidden'
+          ]
+      }
+  );
+  
+
+  cleanDOM();
+
+})();
+</script><script src="app/markup/gesture-markup.js"></script><script src="app/markup/app-markup.js"></script></body></html>
