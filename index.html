@@ -1644,24 +1644,7 @@ div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
     }, true
   );
 
-  const filterRules = [
-    { type: "selectorOnly", selector: '[data-testid="accounts-profile-button"]' },
-    { type: "selectorOnly", selector: '[data-testid="conversation-options-button"]' },
-    { type: "selectorOnly", selector: "#modal-account-payment" },
-    { type: "selectorOnly", selector: ".data-prompt-textarea-header aside" },
-    { type: "selectorOnly", selector: 'a[href="/library"]' },
-    { type: "selectorOnly", selector: 'a[href="/admin"]' },
-    { type: "selectorOnly", selector: 'a[href="/apps"]' },
-    { type: "selectorOnly", selector: 'a[href="/c/mustbe_hidden_pin"]' },
-    { type: "selectorOnly", selector: 'a[href="/deep-research"]' },
-    { type: "textOnly", text: "Report conversation" },
-    { type: "textOnly", text: "This is a copy of a shared ChatGPT conversation" },
-    { type: "textOnly", text: "Messages beyond this point are only visible to you" },
-    { type: "textOnly", text: "Archive" },
-    { type: "textOnly", text: "Start a group chat" },
-    { type: "xpath", query: "//button[contains(., 'Invite team members')]" }
-  ];
-
+ 
   function cleanDOM() {
     document.body.removeAttribute('data-scroll-locked');
     document.documentElement.removeAttribute('data-scroll-locked');
